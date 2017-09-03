@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Home from '../pages/Home'
 import About from '../pages/About'
 import Article from '../pages/Article'
+import Admin from '../pages/admin'
+import NotFound from '../pages/NotFound'
+import SignOut from '../pages/SignOut'
 Vue.use(Router)
 
 export default new Router({
@@ -28,9 +31,24 @@ export default new Router({
       component: Home
     },
     {
-      path: '/target/:id',
-      name: 'Target',
+      path: '/article/tag/:id',
+      name: 'Tag',
       component: Home
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
+    },
+    {
+      path: '/not-found',
+      name: 'NotFound',
+      component: NotFound
+    },
+    {
+      path: '/sign-out',
+      name: 'SignOut',
+      component: SignOut
     }
   ]
 })

@@ -1,120 +1,116 @@
 <template>
   <div class='main'>
-    <div class='col md-8 list'>
-      <div v-for="article in articles" class="item">
-        <article-item :data="article"></article-item>
-      </div>
-    </div>
-    <div class='col md-4 xs-12'>
-      <lastest-article :data="lastestArticles"></lastest-article>
-      <archive :data="archives"></archive>
-      <target :data="targets"></target>
-    </div>
+    <md-layout md-gutter>
+      <md-layout md-flex="66" class="wrapper" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+        <div v-for="article in articles" class="item" :key="article.id">
+          <article-item :data="article"></article-item>
+        </div>
+      </md-layout>
+      <md-layout md-flex="33" class="wrapper">
+        <lastest-article :data="lastestArticles"></lastest-article>
+        <archive :data="archives"></archive>
+        <tag :data="tags"></tag>
+
+      </md-layout>
+    </md-layout>
   </div>
 </template>
 
 <script>
 import LastestArticle from '../components/LastestArticle'
 import Archive from '../components/Archive'
-import Target from '../components/Target'
+import Tag from '../components/Tag'
 import ArticleItem from '../components/ArticleItem'
+import axios from 'axios'
+
 export default {
   components: {
     LastestArticle,
     Archive,
-    Target,
+    Tag,
     ArticleItem
   },
   name: 'home',
   data () {
     return {
-      articles: [
-        {
-          id: 1,
-          title: '文章名字',
-          target: '前端',
-          date: '2017/6/17',
-          clickTimes: '2222',
-          content: `随着屏幕的大小变换，内容区域的元素会匹配屏幕重新布局，就是我们说的自适应效果。我们在.col列中追加class类就可以实现自适应效果。如超小屏幕(xs)、超大屏幕(xl)。栅格系统首先会匹配移动手机版小屏幕，所以每个.col都需要一个class如：.xs-*，这样的话如果大屏幕的类没有设置，它就会使用这个.xs-*。
-本文不会探讨单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 首先本文不会探讨
-单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 tag 来快速筛选感兴趣的文章，文章也可以依照 而且人工设置难免不规范和不完全。`
-        },
-        {
-          id: 2,
-          title: '文章名字2',
-          target: '前端',
-          date: '2017/6/17',
-          clickTimes: '222',
-          content: `随着屏幕的大小变换，内容区域的元素会匹配屏幕重新布局，就是我们说的自适应效果。我们在.col列中追加class类就可以实现自适应效果。如超小屏幕(xs)、超大屏幕(xl)。栅格系统首先会匹配移动手机版小屏幕，所以每个.col都需要一个class如：.xs-*，这样的话如果大屏幕的类没有设置，它就会使用这个.xs-*。
-本文不会探讨单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 首先本文不会探讨
-单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 tag 来快速筛选感兴趣的文章，文章也可以依照 而且人工设置难免不规范和不完全。`
-        },
-        {
-          id: 3,
-          title: '文章名字3',
-          target: '前端',
-          date: '2017/6/17',
-          clickTimes: '222',
-          content: `随着屏幕的大小变换，内容区域的元素会匹配屏幕重新布局，就是我们说的自适应效果。我们在.col列中追加class类就可以实现自适应效果。如超小屏幕(xs)、超大屏幕(xl)。栅格系统首先会匹配移动手机版小屏幕，所以每个.col都需要一个class如：.xs-*，这样的话如果大屏幕的类没有设置，它就会使用这个.xs-*。
-本文不会探讨单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 首先本文不会探讨
-单元测试方向，因为单测已经有完善的工具体系。但前端开发中，除了一些框架和库，愿意去写单测的少之又少。另外单测维护成本较高，而且也没法满足前端测试的所有需求。 用户可以基于 tag 来快速筛选感兴趣的文章，文章也可以依照 而且人工设置难免不规范和不完全。`
-        }
-      ],
-      lastestArticles: [
-        {
-          id: 1,
-          title: '文章名字'
-        },
-        {
-          id: 2,
-          title: '文章名字2'
-        },
-        {
-          id: 3,
-          title: '文章名字3'
-        }
-      ],
-      archives: [
-        {
-          year: 2017,
-          month: 1,
-          articleNum: 3
-        },
-        {
-          year: 2017,
-          month: 2,
-          articleNum: 6
-        },
-        {
-          year: 2017,
-          month: 3,
-          articleNum: 5
-        }
-      ],
-      targets: [
-        {
-          id: 1,
-          name: '前端'
-        },
-        {
-          id: 2,
-          name: 'css'
-        },
-        {
-          id: 3,
-          name: '爬虫'
-        }
-      ]
+      articles: [],
+      pagination: {
+        pageSize: 10,
+        total: 10,
+        nextOffset: 0,
+        offset: 0
+      },
+      filter: {},
+      resource: 'article',
+      queryId: null,
+      lastestArticles: [],
+      archives: [],
+      tags: [],
+      routeName: null
     }
-  },
-  created () {
-    console.log(this.$route.name)
-    console.log(this.$route.params)
   },
   watch: {
     '$route': function (newVal) {
-      console.log(newVal.name)
-      console.log(newVal.params)
+      this.initByRoute()
+      this.loadMore()
+    }
+  },
+  async created () {
+    this.initByRoute()
+    let { data: lastestArticlesRes } = await axios.get('http://localhost:3000/api/lastest-article')
+    let { data: archivesRes } = await axios.get('http://localhost:3000/api/archive')
+    let { data: tagsRes } = await axios.get('http://localhost:3000/api/tag')
+    this.lastestArticles = lastestArticlesRes.data
+    this.archives = archivesRes.data
+    this.tags = tagsRes.data
+  },
+  methods: {
+    loadMore () {
+      if (this.pagination.nextOffset != null) {
+        let url = 'http://localhost:3000/api/' +
+        this.resource + (this.resource === 'article/tag' ? ('/' + this.queryId) : '') +
+        `?pageSize=${this.pagination.pageSize}&` +
+        `offset=${this.pagination.nextOffset}&` +
+        `filter=${JSON.stringify(this.filter)}`
+        console.log(url)
+        axios.get(url)
+          .then(({ data: res }) => {
+            if (!res.err) {
+              this.articles = [...this.articles, ...res.data]
+              this.pagination = res.pagination
+            } else {
+              console.log(res)
+            }
+          })
+      }
+    },
+    initByRoute () {
+      const name = this.$route.name
+      this.routeName = name
+      if (name === 'Achive') {
+        const { year, month } = this.$route.params
+        this.filter = {
+          createdAt: {
+            '$lt': `${year}-${+month + 1}-1`,
+            '$gte': `${year}-${month}-1`
+          }
+        }
+        this.resource = 'article'
+      } else if (name === 'Tag') {
+        const { id } = this.$route.params
+        this.resource = 'article/tag'
+        this.queryId = id
+      } else if (name === 'Home') {
+        this.filter = {}
+        this.resource = 'article'
+      }
+      this.pagination = {
+        pageSize: 10,
+        total: 10,
+        nextOffset: 0,
+        offset: 0
+      }
+      this.articles = []
     }
   }
 }
@@ -122,11 +118,15 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-
-.list{
+.list {
   padding: 0 20px
 }
-.item{
+
+.wrapper {
+  display: block
+}
+
+.item {
   margin-bottom: 60px
 }
 </style>

@@ -3,7 +3,7 @@
     <h2>标签</h2>
     <ul>
         <li v-for="target in data">
-            <router-link :to="`/target/${target.id}`">{{target.name}}</router-link>
+            <router-link :to="`/article/tag/${target.id}`">{{target.name}}</router-link>
         </li>
     </ul>
   </div>

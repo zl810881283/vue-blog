@@ -2,16 +2,16 @@
   <div class="article-item">
     <h3>{{data.title}}</h3>
     <div class="desc">
-        <span class="target">{{data.target}}</span>
+        <span class="target">{{data.tags && data.tags.map(i=>i.name).join(",")}}</span>
         <span class="cricle"></span>
-        <span class="date">{{data.date}}</span>
+        <span class="date">{{data.createdAt | datetime('YYYY/MM/DD')}}</span>
         <span class="cricle"></span>
         <span class="click-times">浏览 {{data.clickTimes}}</span>
     </div>
-    <div class="content" v-if="showDetail">{{ data.content }}</div>
-    <div class="content" v-if="!showDetail">{{ data.content | clip }}</div>
+    <div class="content" v-if="showDetail" v-html="data.content"></div>
+    <div class="content" v-if="!showDetail" v-html="data.content"></div>
     
-    <div v-if="!showDetail"class="view-article"><router-link to="/article/1">查看文章</router-link></div>
+    <div v-if="!showDetail"class="view-article"><router-link :to="`/article/${data.id}`">查看文章</router-link></div>
   </div>
 </template>
 
@@ -27,9 +27,7 @@ export default {
       type: [Object, Array]
     }
   },
-  data () {
-    return {
-    }
+  methods: {
   }
 }
 </script>

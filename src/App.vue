@@ -14,7 +14,6 @@ export default {
 </script>
 
 <style>
-@import './assets/css/base.css';
 ol, ul, body{
   margin: 0;
   padding: 0;
