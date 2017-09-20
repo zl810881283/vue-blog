@@ -91,6 +91,7 @@ export default {
     } else {
       this.isSignin = true
       this.user = res.data
+      window.localStorage.setItem('userId', this.user.id)
     }
   },
   watch: {
@@ -118,6 +119,7 @@ export default {
       } else {
         alert('登录成功')
         this.isSignin = true
+        window.localStorage.setItem('userId', res.data.id)
         this.$refs['signinDialog'].close()
       }
     },

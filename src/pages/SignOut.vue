@@ -17,6 +17,7 @@ export default {
   },
   created () {
     axios.delete('http://localhost:3000/api/session')
+    window.localStorage.clear()
     this.timer = setInterval(() => {
       if (this.remainTime > 0) {
         this.remainTime--

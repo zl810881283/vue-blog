@@ -6,13 +6,16 @@ import App from './App'
 import router from './router'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueMaterial from 'vue-material'
+import ElementUI from 'element-ui'
 import axios from 'axios'
 import 'vue-material/dist/vue-material.css'
+import 'element-ui/lib/theme-default/index.css'
 
 axios.defaults.withCredentials = true
 
 Vue.use(infiniteScroll)
 Vue.use(VueMaterial)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
